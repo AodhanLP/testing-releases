@@ -1,9 +1,6 @@
 name: Build and Push Docker Images to an ECR
 
-on:
-  release:
-    types:
-      - published
+on: release
 
 jobs:
   taskDefinition:
