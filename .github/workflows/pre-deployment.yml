@@ -1,6 +1,8 @@
 name: Build and Push Docker Images to an ECR
 
-on: release
+on:
+  release:
+    types: [published]
 
 jobs:
   taskDefinition:
@@ -13,16 +15,13 @@ jobs:
 
       - name: Update Task Definition
         run: |
-          # Read the release version from the event payload
           releaseVersion=$(jq --raw-output '.release.tag_name' $GITHUB_EVENT_PATH)
           echo "Release version: $releaseVersion"
 
-          # Update the JSON file with the release version
           jsonFile=".github/TaskDefinition.json"
           updatedImage="805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-builder:$releaseVersion"
           jq --arg updatedImage "$updatedImage" '.containerDefinitions[].image = $updatedImage' "$jsonFile" > tmp.json && mv tmp.json "$jsonFile"
-          
-          # Commit and push the updated JSON file
+
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git commit -m "Update container image to $releaseVersion" "$jsonFile"
