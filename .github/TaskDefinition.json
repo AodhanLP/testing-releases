@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "builder",
-      "image": "805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-builder:v1.0.8",
+      "image": "805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-builder:1.0.10",
       "cpu": 0,
       "portMappings": [
         {
@@ -56,7 +56,7 @@
     },
     {
       "name": "nginx",
-      "image": "805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-builder:v1.0.8",
+      "image": "805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-builder:1.0.10",
       "cpu": 0,
       "portMappings": [
         {
