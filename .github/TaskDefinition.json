@@ -1,0 +1,184 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:805327453052:task-definition/adapt-stage:50",
+    "containerDefinitions": [
+        {
+            "name": "builder",
+            "image": "805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-builder:16",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "builder-5050-tcp",
+                    "containerPort": 5050,
+                    "hostPort": 5050,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "ENV",
+                    "value": "poc"
+                },
+                {
+                    "name": "NODE_ENV",
+                    "value": "production"
+                },
+                {
+                    "name": "s3-source-file",
+                    "value": "lp-adapt-stage-opsworks/ecs/ecs-poc-config.json"
+                }
+            ],
+            "mountPoints": [
+                {
+                    "sourceVolume": "adapt-studio-data",
+                    "containerPath": "/usr/src/app/shared/data"
+                },
+                {
+                    "sourceVolume": "adapt-studio-output",
+                    "containerPath": "/usr/src/app/shared/output"
+                },
+                {
+                    "sourceVolume": "adapt-studio-plugins",
+                    "containerPath": "/usr/src/app/shared/plugins"
+                }
+            ],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/adapt-stage",
+                    "awslogs-region": "eu-west-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        },
+        {
+            "name": "nginx",
+            "image": "805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-nginx:9",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "nginx-80-tcp",
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "ROOT_URL",
+                    "value": "http://localhost:5050"
+                },
+                {
+                    "name": "NGINX_PORT",
+                    "value": "80"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/adapt-stage",
+                    "awslogs-region": "eu-west-2",
+                    "awslogs-stream-prefix": "nginx"
+                }
+            }
+        }
+    ],
+    "family": "adapt-stage",
+    "taskRoleArn": "arn:aws:iam::805327453052:role/adapt-ecs-task-role",
+    "executionRoleArn": "arn:aws:iam::805327453052:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 50,
+    "volumes": [
+        {
+            "name": "adapt-studio-data",
+            "efsVolumeConfiguration": {
+                "fileSystemId": "fs-02902438fe2f4a73a",
+                "rootDirectory": "/data"
+            }
+        },
+        {
+            "name": "adapt-studio-output",
+            "efsVolumeConfiguration": {
+                "fileSystemId": "fs-02902438fe2f4a73a",
+                "rootDirectory": "/adapt_framework"
+            }
+        },
+        {
+            "name": "adapt-studio-plugins",
+            "efsVolumeConfiguration": {
+                "fileSystemId": "fs-02902438fe2f4a73a",
+                "rootDirectory": "/adapt_framework/src/"
+            }
+        }
+    ],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.efsAuth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.efs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.25"
+        },
+        {
+            "name": "ecs.capability.extensible-ephemeral-storage"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "ephemeralStorage": {
+        "sizeInGiB": 21
+    },
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2023-05-31T14:44:54.508Z",
+    "registeredBy": "arn:aws:sts::805327453052:assumed-role/AWSReservedSSO_AWSAdministratorAccess_1493603993a00714/niamh.gibbons@learningpool.com",
+    "tags": []
+}
