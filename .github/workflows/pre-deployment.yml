@@ -19,7 +19,7 @@ jobs:
           echo "Release version: $releaseVersion"
 
           jsonFile=".github/TaskDefinition.json"
-          updatedImage="805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-builder:$releaseVersion"
+          updatedImage="805327453052.dkr.ecr.eu-west-2.amazonaws.com/adapt-builder:${releaseVersion#v}"
           jq --arg updatedImage "$updatedImage" '.containerDefinitions[].image = $updatedImage' "$jsonFile" > tmp.json && mv tmp.json "$jsonFile"
 
           git config user.name "$GITHUB_ACTOR"
