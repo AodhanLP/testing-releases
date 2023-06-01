@@ -31,5 +31,6 @@
             "message": "Chore: Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         }
         ]
-    ]
+    ],
+    "repositoryUrl": "git@github.com:AodhanLP/testing-releases.git"
 }
